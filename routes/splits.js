@@ -4,7 +4,6 @@ import {getSplits, createSplit, deleteSplit, patchSplit} from '../controllers/sp
 const router = express.Router()
 
 router.get('/', getSplits)
-
 router.post('/' ,createSplit)
 router.delete('/:id', deleteSplit)
 router.patch('/:id', patchSplit)
