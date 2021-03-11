@@ -4,8 +4,9 @@ workoutCardSchema = mongoose.Schema({
     lift: String,
     sets: Number,
     reps: Number,
-    weight: Number
+    weight: Number,
+    parent: {type: mongoose.Schema.Types.ObjectId, ref: 'SplitCard'}
 })
 
-const workoutCardMessage = mongoose.model('WorkoutCard', workoutCardSchema)
-export default workoutCardMessage
+const WorkoutCardMessage = mongoose.model('WorkoutCard', workoutCardSchema)
+export default WorkoutCardMessage

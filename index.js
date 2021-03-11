@@ -11,6 +11,7 @@ app.use(bodyParser.json({limit: '10mb', extended: true}))
 app.use(bodyParser.urlencoded({limit: '10mb', extended: true}))
 app.use(cors())
 
+
 app.use('/splits', splitsRoutes)
 app.use('/days', daysRoutes)
 

@@ -6,5 +6,5 @@ const daySchema = mongoose.Schema({
     splitCards: [{type: mongoose.Schema.Types.ObjectId, ref: 'SplitCard'}]
 })
 
-const dayMessage = mongoose.model('Day', daySchema)
-export default dayMessage
+const DayMessage = mongoose.model('Day', daySchema)
+export default DayMessage

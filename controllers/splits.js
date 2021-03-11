@@ -12,7 +12,6 @@ export const getSplits = async(req, res) =>{
 }
 
 export const createSplit = async (req, res) =>{
-    console.log(req.body)
     const split = req.body
 
     const newSplit = new SplitMessage(split)
@@ -26,7 +25,6 @@ export const createSplit = async (req, res) =>{
 }
 
 export const deleteSplit = async (req, res) =>{
-    console.log(req.params)
     const {id} = req.params
     if(!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send('ID not found')
 
