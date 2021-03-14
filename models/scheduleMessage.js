@@ -1,9 +1,8 @@
-import mongoose, { Types } from 'mongoose'
+import mongoose from 'mongoose'
 
 const scheduleSchema = mongoose.Schema({
     date: Date,
-    muscleGroupId: {type: Types.ObjectId, ref: 'MuscleGroup'},
-    workouts: [{type: Types.ObjectId, ref: 'Workout'}]
+    workouts: [{type: mongoose.Types.ObjectId, ref: 'Workout'}]
 })
 
 const scheduleMessage = mongoose.model('Schedule', scheduleSchema)

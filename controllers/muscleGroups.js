@@ -35,3 +35,19 @@ export const deleteMuscleGroup = async (req, res) =>{
         res.status(404).json({message: 'ID not found'})
     }
 }
+
+export const patchMuscleGroup = async (req, res) =>{
+    const {id} = req.params
+    const body = req.body
+    if(!mongoose.Types.ObjectId.isValid(id)) return res.status(400).json({message: 'ID is invalid'})
+    try{
+        await muscleGroupMessage.findByIdAndUpdate(id, body)
+        const updatedMuscleGroup = await muscleGroupMessage.findById(id)
+        if(updatedMuscleGroup === null) return res.status(400).json({message: 'ID not found'})
+        
+        res.status(200).json(updatedMuscleGroup)
+    }catch(error){
+        res.status(400).json({message: error.message})
+    }
+    
+}

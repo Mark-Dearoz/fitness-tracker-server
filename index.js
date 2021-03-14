@@ -7,6 +7,7 @@ import cors from 'cors'
 import muscleGroupsRoutes from './routes/muscleGroups.js'
 import exerciseRoutes  from './routes/exercises.js'
 import workoutsRoutes from './routes/workouts.js'
+import schedulesRoutes from './routes/schedules.js'
 
 const app = express()
 app.use(bodyParser.json({limit: '10mb', extended: true}))
@@ -17,6 +18,7 @@ app.use(cors())
 app.use('/exercises',exerciseRoutes)
 app.use('/musclegroups', muscleGroupsRoutes)
 app.use('/workouts', workoutsRoutes)
+app.use('/schedules', schedulesRoutes)
 
 const CONNECTION_URL = 'mongodb+srv://fitnesstrackerserver:WLSOqTQKLK5I1FTK@cluster0.7ycuo.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
 const PORT = process.env.PORT || 5000
