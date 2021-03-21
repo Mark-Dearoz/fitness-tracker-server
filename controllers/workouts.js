@@ -48,3 +48,40 @@ export const patchWorkout = async (req, res) =>{
         res.status(400).json({message: error.message})
     }
 }
+
+export const getWeightData = async (req, res) => {
+    const {id} = req.params
+    if(!mongoose.Types.ObjectId.isValid(id)) return res.status(404).json({message: 'Id is invalid'})
+    try{
+        const workouts = await workoutMessage.find({exercise : id})
+        const data = workouts.map(workout =>  ({x: workout.date.toISOString().slice(2,10), y: workout.weight}))
+        res.status(200).json(data)
+    }catch(error){
+        res.status(400).json({message: error.message})
+    }
+}
+
+export const getRepetitionData = async (req, res) => {
+    const {id} = req.params
+    if(!mongoose.Types.ObjectId.isValid(id)) return res.status(404).json({message: 'Id is invalid'})
+    try{
+        const workouts = await workoutMessage.find({exercise : id})
+        const data = workouts.map(workout =>  ({x: workout.date.toISOString().slice(2,10), y: workout.reps}))
+        res.status(200).json(data)
+    }catch(error){
+        res.status(400).json({message: error.message})
+    }
+}
+
+export const getVolumeData = async (req, res) => {
+    const {id} = req.params
+    if(!mongoose.Types.ObjectId.isValid(id)) return res.status(404).json({message: 'Id is invalid'})
+        const workouts = await workoutMessage.find({exercise : id})
+        const data = workouts.map(workout =>  ({x: workout.date.toISOString().slice(2,10), y: workout.reps * workout.sets * workout.weight}))
+        res.status(200).json(data)
+    try{
+
+    }catch(error){
+        res.status(400).json({message: error.message})
+    }
+}
