@@ -17,8 +17,8 @@ export const createWorkout = async (req, res) =>{
     if(!mongoose.Types.ObjectId.isValid(newWorkout.exercise)) return res.status(404).json({message: 'Exercise ID is invalid'})
     try{
         await newWorkout.save()
-        
-        res.status(201).json(newWorkout)
+        const populatedWorkout = await workoutMessage.findById(newWorkout._id).populate({path: 'exercise', populate: {path: 'muscleGroupId', model: 'MuscleGroup'}})
+        res.status(201).json(populatedWorkout)
     }catch(error){
         res.status(409).json({message: error.message})
     }
@@ -41,11 +41,32 @@ export const patchWorkout = async (req, res) =>{
     if(!mongoose.Types.ObjectId.isValid(id)) return res.status(404).json({message: 'Id is invalid'})
     try{
         await workoutMessage.findByIdAndUpdate(id, body)
-        const updatedWorkout = await workoutMessage.findById(id)
-        if(updateWorkout == null) return res.status(404).json({message: 'ID not found'})
+        const updatedWorkout = await workoutMessage.findById(id).populate({path: 'exercise', populate: {path: 'muscleGroupId', model: 'MuscleGroup'}})
         res.status(200).json(updatedWorkout)
     }catch(error){
         res.status(400).json({message: error.message})
+    }
+}
+
+export const getWeek = async (req, res) => {
+    const {number} = req.params
+    const startDate = new Date()
+    startDate.setDate(startDate.getDate() - 4*parseInt(number) - 3)
+    startDate.setUTCHours(0)
+    startDate.setUTCMinutes(0)
+    startDate.setUTCSeconds(0)
+    startDate.setUTCMilliseconds(0)
+    const endDate = new Date()
+    endDate.setDate(endDate.getDate() - 4*parseInt(number))
+    endDate.setUTCHours(23)
+    endDate.setUTCMinutes(59)
+    endDate.setUTCSeconds(59)
+    endDate.setUTCMilliseconds(999)
+    try{
+        const weekData = await workoutMessage.find({date: {$gte: startDate, $lt: endDate}}).populate({path: 'exercise', populate: {path: 'muscleGroupId', model: 'MuscleGroup'}})
+        res.status(200).json(weekData)
+    }catch(error){
+        res.status(404).json({message: error.message})
     }
 }
 
@@ -54,7 +75,7 @@ export const getWeightData = async (req, res) => {
     if(!mongoose.Types.ObjectId.isValid(id)) return res.status(404).json({message: 'Id is invalid'})
     try{
         const workouts = await workoutMessage.find({exercise : id})
-        const data = workouts.map(workout =>  ({x: workout.date.toISOString().slice(2,10), y: workout.weight}))
+        const data = workouts.map(workout =>  ({x: workout.date.toDateString().slice(4,10), y: workout.weight}))
         res.status(200).json(data)
     }catch(error){
         res.status(400).json({message: error.message})
@@ -66,7 +87,7 @@ export const getRepetitionData = async (req, res) => {
     if(!mongoose.Types.ObjectId.isValid(id)) return res.status(404).json({message: 'Id is invalid'})
     try{
         const workouts = await workoutMessage.find({exercise : id})
-        const data = workouts.map(workout =>  ({x: workout.date.toISOString().slice(2,10), y: workout.reps}))
+        const data = workouts.map(workout =>  ({x: workout.date.toDateString().slice(4,10), y: workout.weight}))
         res.status(200).json(data)
     }catch(error){
         res.status(400).json({message: error.message})
@@ -77,7 +98,7 @@ export const getVolumeData = async (req, res) => {
     const {id} = req.params
     if(!mongoose.Types.ObjectId.isValid(id)) return res.status(404).json({message: 'Id is invalid'})
         const workouts = await workoutMessage.find({exercise : id})
-        const data = workouts.map(workout =>  ({x: workout.date.toISOString().slice(2,10), y: workout.reps * workout.sets * workout.weight}))
+        const data = workouts.map(workout =>  ({x: workout.date.toDateString().slice(4,10), y: workout.reps * workout.sets * workout.weight}))
         res.status(200).json(data)
     try{
 

@@ -3,7 +3,7 @@ import muscleGroupMessage from '../models/muscleGroupMessage.js'
 
 export const getMuscleGroups = async (req, res) =>{
     try{
-        const muscleGroupMessages = await muscleGroupMessage.find().populate('exercises')
+        const muscleGroupMessages = await muscleGroupMessage.find()
         res.status(200).json(muscleGroupMessages)
     }catch(error){
         res.status(404).json({message: error.message})
