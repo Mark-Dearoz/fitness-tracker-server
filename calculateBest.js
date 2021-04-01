@@ -6,7 +6,7 @@ export const calculateBest = workouts =>{
         if(workout.reps === 1) return workout.weight
         return Math.round(workout.weight * (1 + (workout.reps / 30)))
     })
-    console.log(maxes)
+
     const best = {index: -1, max: 0}
     maxes.forEach((max, index) => {
         if(max > best.max){

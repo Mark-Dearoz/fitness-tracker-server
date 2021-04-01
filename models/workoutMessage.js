@@ -1,6 +1,7 @@
 import mongoose from 'mongoose'
 
 const workoutSchema = mongoose.Schema({
+    userId: {type: mongoose.Types.ObjectId, ref: 'User'},
     date: Date,
     exercise: {type: mongoose.Types.ObjectId, ref: 'Exercise'},
     sets: Number,
